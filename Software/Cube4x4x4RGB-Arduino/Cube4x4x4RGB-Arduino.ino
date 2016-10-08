@@ -26,7 +26,22 @@ void loop()
 	while (1)
 	{
 
-		cube.Rain(10, 100);
+		//cube.Rain(10, 100);
+		cube.Rainbow(100);
+
+		/*
+		int time = 250;
+
+		for (int a = 0; a < MAX_ALPHA; a++)
+		{
+			cube.On(0, 0, 0, a, 0, 0);
+			delay(time);
+		}
+		for (int a = 0; a < MAX_ALPHA; a++)
+		{
+			cube.On(0, 0, 0, MAX_ALPHA-a, 0, 0);
+			delay(time);
+		}
 
 		/*
 

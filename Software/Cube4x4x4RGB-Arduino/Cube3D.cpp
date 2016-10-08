@@ -401,12 +401,38 @@ void Cube3D::Rain(int iterations, int time)
 			rnd_y = rand() % 4;
 			rnd_a = rand() % 8;
 
-			On(rnd_x, rnd_y, 3, 0,0,rnd_a);
+			On(rnd_x, rnd_y, 3, 0, 0, rnd_a);
 		}
 
 		delay(time);
 		Shift(AXIS_Z, DOWN);
 	}
+}
+
+void Cube3D::Rainbow(int time)
+{
+	int r= 0, g = 0, b = 0; // 0 à MAX_Alpha
+	int n = 64;
+	int f = 1;
+
+	double phaseR = 0;
+	double phaseG = 2.0 / 3.0 * PI;
+	double phaseB = 4.0 / 3.0 * PI;
+
+	for (int t = 0; t < n; t++)
+	{
+		r = (MAX_ALPHA) * 0.66 * sin(2.0 * PI*f * t/n + phaseR) + 0.4 * MAX_ALPHA;
+		g = (MAX_ALPHA) * 0.66 * sin(2.0 * PI*f * t/n + phaseG) + 0.4 * MAX_ALPHA;
+		b = (MAX_ALPHA) * 0.66 * sin(2.0 * PI*f * t/n + phaseB) + 0.4 * MAX_ALPHA;
+
+		r = r < 0 ? 0 : r;
+		g = g < 0 ? 0 : g;
+		b = b < 0 ? 0 : b;
+
+		delay(time);
+		On(r, g, b);
+	}
+	
 }
 
 /* OLD ################################################################################*/

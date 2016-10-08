@@ -64,7 +64,7 @@ _________________________________________________________________
 //#define ARDUINO "MEGA"
 #define ARDUINO "NANO"
 #define CUBEBOARD 10 // Board 1.0
-#define MAX_ALPHA 8
+#define MAX_ALPHA 12
 
 class Cube3D
 {
@@ -88,6 +88,7 @@ public:
 
 	/* Animations */
 	void Rain(int iterations, int time);
+	void Rainbow(int time);
 
 	/*OLD #####################################################*/
 

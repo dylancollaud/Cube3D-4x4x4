@@ -50,7 +50,5 @@ extern "C" void __cxa_pure_virtual() {;}
 #define F(string_literal) ((const PROGMEM char *)(string_literal))
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
-#include <Cube4x4x4RGB-Arduino.ino>
-#include <Cube3D.cpp>
-#include <Cube3D.h>
+#include "Cube4x4x4RGB-Arduino.ino"
 #endif
