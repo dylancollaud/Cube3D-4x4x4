@@ -74,17 +74,17 @@ void Cube3D::refresh()
 #if CUBEBOARD == 10
 	// all layer selects off
 
-	PORTB = 0x00; //TODO voir si je peux gagner en luminosité si on le place plus bas
+	PORTB = 0x00; //TODO voir si je peux gagner en luminositï¿½ si on le place plus bas
 	PORTB |= 0x08; // output enable off 0b 0000 1000
 
 
 	for (i = 0; i < 6; i++)
 	{
 
-		PORTC = (PORTC & 0xF8) | (0x07 & (i)); // défini l'adresse
-		PORTD = cubeRGB[current_layer][i][current_alpha]; //Défini le bus
+		PORTC = (PORTC & 0xF8) | (0x07 & (i)); // dï¿½fini l'adresse
+		PORTD = cubeRGB[current_layer][i][current_alpha]; //Dï¿½fini le bus
 	}
-	PORTC = (PORTC & 0xF8) | (0x07 & (0)); // défini l'adresse
+	PORTC = (PORTC & 0xF8) | (0x07 & (0)); // dï¿½fini l'adresse
 
 
 	//PORTC = (PORTC & 0xF8) | (1 << j + 1);
@@ -95,7 +95,7 @@ void Cube3D::refresh()
 
 
 
-	// Une erreur a été faite sur la première carte il faut relier D8 à la résistance qui actionne le transistor du 4ème étage 
+	// Une erreur a ï¿½tï¿½ faite sur la premiï¿½re carte il faut relier D8 ï¿½ la rï¿½sistance qui actionne le transistor du 4ï¿½me ï¿½tage 
 
 	///*
 	if (current_layer == 0)
@@ -115,11 +115,11 @@ void Cube3D::refresh()
 
 #elif CUBEBOARD == 20
 	//Reset Floor //Remove for troubling
-	//PORTB = 0x00; //TODO voir si je peux gagner en luminosité si on le place plus bas
+	//PORTB = 0x00; //TODO voir si je peux gagner en luminositï¿½ si on le place plus bas
 	//OE ou D9 OFF (1 => Off)
 	PORTC |= 0x10; // output enable off 0b 0000 1000
 
-	//Evite led fantome précédente
+	//Evite led fantome prï¿½cï¿½dente
 	PORTC = (PORTC & 0xF0);
 	//Write all Shiffter IC (6)
 	for (i = 0; i < 6; i++)
@@ -131,12 +131,12 @@ void Cube3D::refresh()
 		PORTD = (PORTD & 0x03) | (cubeRGB[current_layer][i][current_alpha] << 2);
 		PORTB = (PORTB & 0xFC) | (cubeRGB[current_layer][i][current_alpha] >> 6);
 	}
-	//Remise à l'adresse 0 pour éviter un bug d'affiche ...
+	//Remise ï¿½ l'adresse 0 pour ï¿½viter un bug d'affiche ...
 	PORTB = (PORTB & 0xE3) | (0x1C & (0 << 2));
 	//OE ou D0 ON (0 => On)
 	PORTC &= 0b11101111; // Output enable on. 
 
-	//Activation de l'étage
+	//Activation de l'ï¿½tage
 	PORTC = (0x01 << current_layer);
 #endif // CUBEBOARD
 
@@ -200,7 +200,7 @@ void Cube3D::On(char x, char y, char z, char r, char g, char b)
 
 #if CUBEBOARD == 10
 
-	//RX et TX sont inversé sur le schéma et produise une inversion pour le x ...
+	//RX et TX sont inversï¿½ sur le schï¿½ma et produise une inversion pour le x ...
 
 	if (x == 0 && z % 2 == 0)
 		x = 1;
@@ -253,7 +253,7 @@ void Cube3D::isOn(char x, char y, char z, char *r, char *g, char *b)
 
 #if CUBEBOARD == 10
 
-	//RX et TX sont inversé sur le schéma et produise une inversion pour le x ...
+	//RX et TX sont inversï¿½ sur le schï¿½ma et produise une inversion pour le x ...
 
 	if (x == 0 && z % 2 == 0)
 		x = 1;
@@ -295,7 +295,7 @@ void Cube3D::Off(char x, char y, char z)
 
 #if CUBEBOARD == 10
 
-	//RX et TX sont inversé sur le schéma et produise une inversion pour le x ...
+	//RX et TX sont inversï¿½ sur le schï¿½ma et produise une inversion pour le x ...
 
 	if (x == 0 && y % 2 == 0)
 		x = 1;
@@ -460,7 +460,7 @@ void Cube3D::Rain(int iterations, int time)
 
 void Cube3D::Rainbow(int time)
 {
-	int r= 0, g = 0, b = 0; // 0 à MAX_Alpha
+	int r= 0, g = 0, b = 0; // 0 ï¿½ MAX_Alpha
 	int n = 196;
 	int f = 1;
 
@@ -486,7 +486,7 @@ void Cube3D::Rainbow(int time)
 
 void Cube3D::RainbowV(int time)
 {
-	int r = 0, g = 0, b = 0; // 0 à MAX_Alpha
+	int r = 0, g = 0, b = 0; // 0 ï¿½ MAX_Alpha
 	int n = 16;
 	int f = 1;
 
@@ -774,7 +774,7 @@ void Cube3D::feuArtifice()
 
 	while (true) {
 
-		if (z != zMax) {//Phase de monté
+		if (z != zMax) {//Phase de montï¿½
 			z++;
 			fill(0, 0);
 			setvoxel(x, y, z, rgbLancement);
@@ -895,13 +895,13 @@ void Cube3D::jeuJohnConway(int time)
 						}
 					}
 
-					if (cpt > 3 && cpt <= 5) {//Règle 2
+					if (cpt > 3 && cpt <= 5) {//Rï¿½gle 2
 						cubeFutur[i][j][k] = cubeBase[i][j][k];
 					}
-					else if (cpt > 6 && cpt <= 9) {//Règle 1
+					else if (cpt > 6 && cpt <= 9) {//Rï¿½gle 1
 						cubeFutur[i][j][k] = 1;
 					}
-					else { //Règle 3
+					else { //Rï¿½gle 3
 						cubeFutur[i][j][k] = 0;
 					}
 				}
@@ -921,7 +921,7 @@ void Cube3D::jeuJohnConway(int time)
 					{
 						meme = 0;
 					}
-					if (cubeBase[i][j][k] == 1) { // BUG !!! Mettre cubeBase pour que ça tourne
+					if (cubeBase[i][j][k] == 1) { // BUG !!! Mettre cubeBase pour que ï¿½a tourne
 						setvoxel(i, j, k, 1);
 						tour++;
 					}
@@ -999,7 +999,7 @@ void Cube3D::sinusRotation() {
 		if (temps > angleMax) temps -= angleMax;
 
 		a += M_PI / 512; //rotation
-						 //a = M_PI/2; //Règle le bu de rotation
+						 //a = M_PI/2; //Rï¿½gle le bu de rotation
 		if (a > angleMax)
 			a -= angleMax;
 

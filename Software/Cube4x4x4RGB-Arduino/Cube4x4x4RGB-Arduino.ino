@@ -128,7 +128,7 @@ void LedOn(char x, char y, char z, char c)
 {
 #if CUBEBOARD == 10
 	
-	//RX et TX sont inversé sur le schéma et produise une inversion pour le x ...
+	//RX et TX sont inversï¿½ sur le schï¿½ma et produise une inversion pour le x ...
 	
 	if (x == 0 && y%2 ==0)
 		x = 1;
@@ -146,7 +146,7 @@ void LedAlpha(char x, char y, char z, char c, char alpha)
 {
 #if CUBEBOARD == 10
 
-	//RX et TX sont inversé sur le schéma et produise une inversion pour le x ...
+	//RX et TX sont inversï¿½ sur le schï¿½ma et produise une inversion pour le x ...
 
 	if (x == 0 && y % 2 == 0)
 		x = 1;
@@ -168,7 +168,7 @@ void LedOff(char x, char y, char z, char c)
 {
 #if CUBEBOARD == 10
 	
-	//RX et TX sont inversé sur le schéma et produise une inversion pour le x ...
+	//RX et TX sont inversï¿½ sur le schï¿½ma et produise une inversion pour le x ...
 	
 	if (x == 0 && y % 2 == 0)
 		x = 1;
