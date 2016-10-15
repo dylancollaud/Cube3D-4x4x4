@@ -33,10 +33,15 @@ void Cube3D::setup()
 	int i;
 	//FOR ARDUINO Nano
 
+#if CUBEBOARD == 10
 	for (i = 0; i < 13; i++) {
 		pinMode(i, OUTPUT);
-
 	}
+#elif CUBEBOARD == 20
+	for (i = 2; i < 13; i++) {
+		pinMode(i, OUTPUT);
+	}
+#endif
 
 	DDRC = 0xff;
 
@@ -47,7 +52,7 @@ void Cube3D::setup()
 	TCCR2B = 0x00;
 
 	TCCR2A |= (0x01 << WGM21); // CTC mode. clear counter on TCNT2 == OCR2A
-	OCR2A = 20; // Interrupt every 25600th cpu cycle (256*100)
+	OCR2A = 0x04; // Interrupt every 25600th cpu cycle (256*100)
 	TCNT2 = 0x00; // start counting at 0
 	TCCR2B |= (0x01 << CS22) | (0x01 << CS21); // Start the clock with a 256 prescaler
 
@@ -65,10 +70,13 @@ void Cube3D::refresh()
 {
 
 	char i, j = 0, k, x;
+
+#if CUBEBOARD == 10
 	// all layer selects off
 
 	PORTB = 0x00; //TODO voir si je peux gagner en luminosité si on le place plus bas
-	PORTB |= 0x08; // output enable off
+	PORTB |= 0x08; // output enable off 0b 0000 1000
+
 
 	for (i = 0; i < 6; i++)
 	{
@@ -76,6 +84,7 @@ void Cube3D::refresh()
 		PORTC = (PORTC & 0xF8) | (0x07 & (i)); // défini l'adresse
 		PORTD = cubeRGB[current_layer][i][current_alpha]; //Défini le bus
 	}
+	PORTC = (PORTC & 0xF8) | (0x07 & (0)); // défini l'adresse
 
 
 	//PORTC = (PORTC & 0xF8) | (1 << j + 1);
@@ -84,10 +93,8 @@ void Cube3D::refresh()
 	PORTB &= 0b11110111; // Output enable on. 
 
 
-	PORTC = 1;
 
 
-#if CUBEBOARD == 10
 	// Une erreur a été faite sur la première carte il faut relier D8 à la résistance qui actionne le transistor du 4ème étage 
 
 	///*
@@ -105,8 +112,32 @@ void Cube3D::refresh()
 	PORTB = ((0x00 && current_layer) * 0xFF  & 0x02) | ((0x01 && current_layer) * 0xFF & 0x04) |
 	((0x02 && current_layer) * 0xFF & 0x08) | ((0x03 && current_layer) * 0xFF & 0x01);
 	//*/
-#else
-	PORTB = (0x01 << current_layer);
+
+#elif CUBEBOARD == 20
+	//Reset Floor //Remove for troubling
+	//PORTB = 0x00; //TODO voir si je peux gagner en luminosité si on le place plus bas
+	//OE ou D9 OFF (1 => Off)
+	PORTC |= 0x10; // output enable off 0b 0000 1000
+
+	//Evite led fantome précédente
+	PORTC = (PORTC & 0xF0);
+	//Write all Shiffter IC (6)
+	for (i = 0; i < 6; i++)
+	{
+		//Adresse the right IC
+		PORTB = (PORTB & 0xE3) | (0x1C & (i<<2));
+
+		//Write the Bus of eight
+		PORTD = (PORTD & 0x03) | (cubeRGB[current_layer][i][current_alpha] << 2);
+		PORTB = (PORTB & 0xFC) | (cubeRGB[current_layer][i][current_alpha] >> 6);
+	}
+	//Remise à l'adresse 0 pour éviter un bug d'affiche ...
+	PORTB = (PORTB & 0xE3) | (0x1C & (0 << 2));
+	//OE ou D0 ON (0 => On)
+	PORTC &= 0b11101111; // Output enable on. 
+
+	//Activation de l'étage
+	PORTC = (0x01 << current_layer);
 #endif // CUBEBOARD
 
 	current_layer++;
@@ -194,6 +225,24 @@ void Cube3D::On(char x, char y, char z, char r, char g, char b)
 			cubeRGB[y][2 * 2 + z / 2][a] |= 0x01 << (z % 2 * 4 + x);
 		else
 			cubeRGB[y][2 * 2 + z / 2][a] &= ~(0x01 << (z % 2 * 4 + x));
+	}
+}
+
+void Cube3D::On(char Axe, char val, char r, char g, char b)
+{
+	
+	for (char a = 0; a < 4; a++)
+	{
+		for (char c = 0; c < 4; c++)
+		{
+			if (Axe == AXIS_X)
+				On(a, val, c, r, g, b);
+			else if (Axe == AXIS_Y)
+				On(val, a, c, r, g, b);
+			else if (Axe == AXIS_Z)
+				On(a, c, val, r, g, b);
+			
+		}
 	}
 }
 
@@ -412,7 +461,7 @@ void Cube3D::Rain(int iterations, int time)
 void Cube3D::Rainbow(int time)
 {
 	int r= 0, g = 0, b = 0; // 0 à MAX_Alpha
-	int n = 64;
+	int n = 196;
 	int f = 1;
 
 	double phaseR = 0;
@@ -433,6 +482,34 @@ void Cube3D::Rainbow(int time)
 		On(r, g, b);
 	}
 	
+}
+
+void Cube3D::RainbowV(int time)
+{
+	int r = 0, g = 0, b = 0; // 0 à MAX_Alpha
+	int n = 16;
+	int f = 1;
+
+	double phaseR = 0;
+	double phaseG = 2.0 / 3.0 * PI;
+	double phaseB = 4.0 / 3.0 * PI;
+
+	for (int t = 0; t < n; t++)
+	{
+
+		r = (MAX_ALPHA) * 0.66 * sin(2.0 * PI*f * t / n + phaseR) + 0.4 * MAX_ALPHA;
+		g = (MAX_ALPHA) * 0.66 * sin(2.0 * PI*f * t / n + phaseG) + 0.4 * MAX_ALPHA;
+		b = (MAX_ALPHA) * 0.66 * sin(2.0 * PI*f * t / n + phaseB) + 0.4 * MAX_ALPHA;
+
+		r = r < 0 ? 0 : r;
+		g = g < 0 ? 0 : g;
+		b = b < 0 ? 0 : b;
+
+		Shift(AXIS_Z, DOWN);
+		On(AXIS_Z, 3, r, g, b);
+
+		delay(time);
+	}
 }
 
 /* OLD ################################################################################*/

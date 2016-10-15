@@ -63,8 +63,9 @@ _________________________________________________________________
 //#define ARDUINO "UNO"
 //#define ARDUINO "MEGA"
 #define ARDUINO "NANO"
-#define CUBEBOARD 10 // Board 1.0
-#define MAX_ALPHA 12
+//#define CUBEBOARD 10 // Board 1.0 //Différente layout wire
+#define CUBEBOARD 20 //new board 13.10.2016
+#define MAX_ALPHA 32
 
 class Cube3D
 {
@@ -77,6 +78,7 @@ public:
 	void On();
 	void On(char r, char g, char b);
 	void On(char x, char y, char z, char r, char g, char b);
+	void On(char Axe, char val, char r, char g, char b);
 	void isOn(char x, char y, char z, char *r, char *g, char *b);
 
 	void Off();
@@ -89,6 +91,7 @@ public:
 	/* Animations */
 	void Rain(int iterations, int time);
 	void Rainbow(int time);
+	void RainbowV(int time);
 
 	/*OLD #####################################################*/
 
