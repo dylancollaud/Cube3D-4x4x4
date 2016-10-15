@@ -1,4 +1,3 @@
-
 #include "Cube3D.h"
 
 Cube3D cube;
@@ -6,6 +5,7 @@ Cube3D cube;
 void setup()
 {
 	cube.setup();
+
 }
 
 
@@ -25,24 +25,28 @@ void loop()
 
 	while (1)
 	{
-
-		//cube.Rain(10, 100);
-		cube.Rainbow(100);
+		//cube.On(MAX_ALPHA, 0, 0);
+		//cube.On();
+		//cube.Rain(10, 150);
+		if (digitalRead(A5))
+			cube.Rainbow(25);
+		else
+			cube.Rain(10, 100);
 
 		/*
-		int time = 250;
+		int time = 50;
 
 		for (int a = 0; a < MAX_ALPHA; a++)
 		{
-			cube.On(0, 0, 0, a, 0, 0);
+			cube.On(0, 1, 3,0, 0 , a);
 			delay(time);
 		}
 		for (int a = 0; a < MAX_ALPHA; a++)
 		{
-			cube.On(0, 0, 0, MAX_ALPHA-a, 0, 0);
+			cube.On(0, 1, 3, 0, 0, MAX_ALPHA-a);
 			delay(time);
 		}
-
+		//*/
 		/*
 
 		cube.On(0, 0, 0, 8, 8, 8);
@@ -71,12 +75,12 @@ void loop()
 			{
 				for (char x = 0; x < 4; x++)
 				{
-					cube.On(x, y, z, 0, 0, 1);
-					delay(200);
+					cube.On(x, y, z, 0, 0, 8);
+					delay(100);
 				}
 			}
 		}
-		*/
+		//*/
 
 		/*
 		cube.Off();
@@ -107,7 +111,7 @@ void loop()
 		cube.On(0, 0, MAX_ALPHA - 1 - a);
 		delay(time);
 		}
-		*/
+		//*/
 
 
 	}

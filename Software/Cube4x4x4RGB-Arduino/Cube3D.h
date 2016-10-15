@@ -63,8 +63,9 @@ _________________________________________________________________
 //#define ARDUINO "UNO"
 //#define ARDUINO "MEGA"
 #define ARDUINO "NANO"
-#define CUBEBOARD 10 // Board 1.0
-#define MAX_ALPHA 12
+//#define CUBEBOARD 10 // Board 1.0 //Différente layout wire
+#define CUBEBOARD 20 //new board 13.10.2016
+#define MAX_ALPHA 32
 
 class Cube3D
 {
